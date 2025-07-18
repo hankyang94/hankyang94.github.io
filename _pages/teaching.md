@@ -10,6 +10,8 @@ nav: true
 ---
 ## Courses
 
-- Harvard ES/AM 158: [Introduction to Optimal Control and Estimation](https://hankyang.seas.harvard.edu/OptimalControlEstimation/)
+- Harvard ES/AM 158 (Fall 2025 - ): [Introduction to Optimal Control and Reinforcement Learning](https://hankyang.seas.harvard.edu/OptimalControlReinforcementLearning/)
 
-- Harvard ES 257: [Semidefinite Optimization and Relaxation](https://hankyang.seas.harvard.edu/Semidefinite/)
+- Harvard ES/AM 158 (Fall 2023): [Introduction to Optimal Control and Estimation](https://hankyang.seas.harvard.edu/OptimalControlEstimation/)
+
+- Harvard ES 257 (Spring 2024 - ): [Semidefinite Optimization and Relaxation](https://hankyang.seas.harvard.edu/Semidefinite/)
