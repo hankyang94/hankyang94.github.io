@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <strong>Assistant Professor</strong> at Harvard SEAS <br>  Robotics, Vision, Control, Optimization, Learning
+subtitle: <strong>Assistant Professor</strong> at Harvard SEAS <br>  Robotics, Polynomial and Semidefinite Optimization, Control, Learning
 
 profile:
   align: right
