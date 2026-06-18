@@ -6,8 +6,8 @@ subtitle: <strong>Assistant Professor</strong> at Harvard SEAS <br>  Robotics, P
 
 profile:
   align: right
-  image: hank_tall.jpg
-  address: Space Needle, 2022
+  image: heng-yang-france-26.jpg
+  address: Château de Roquebrune, 2026
 
 news: true  # includes a list of news items
 selected_papers: false # includes a list of papers marked as "selected={true}"
