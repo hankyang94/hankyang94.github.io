@@ -43,6 +43,50 @@ body.sticky-bottom-footer {
 // TODO: redefine publications layout.
 
 
+/******************************************************************************
+ * Talks
+ ******************************************************************************/
+
+.talks {
+  .talk-group {
+    margin-top: 1.5rem;
+  }
+
+  .talk-group-title {
+    margin-bottom: 1rem;
+  }
+
+  .talk-entry {
+    margin-bottom: 1.4rem;
+  }
+
+  .talk-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.15rem;
+  }
+
+  .talk-meta {
+    color: var(--global-text-color-light);
+    margin-bottom: 0.25rem;
+
+    span + span::before {
+      content: "|";
+      margin: 0 0.45rem;
+    }
+  }
+
+  .talk-links {
+    margin-bottom: 0;
+
+    a {
+      margin-right: 0.8rem;
+    }
+  }
+}
+
+
 /*****************************************************************************
 * Projects
 *****************************************************************************/

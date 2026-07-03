@@ -15,3 +15,5 @@ nav: true
 - Harvard ES/AM 158 (Fall 2023): [Introduction to Optimal Control and Estimation](https://hankyang.seas.harvard.edu/OptimalControlEstimation/)
 
 - Harvard ES 257 (Spring 2024 - ): [Semidefinite Optimization and Relaxation](https://hankyang.seas.harvard.edu/Semidefinite/)
+
+- Harvard ES 155 (Fall 2024, 2026): Systems and Control
