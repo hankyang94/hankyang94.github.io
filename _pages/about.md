@@ -14,7 +14,7 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I am an Assistant Professor of Electrical Engineering in the [School of Engineering and Applied Sciences](https://www.seas.harvard.edu/) (SEAS) at [Harvard University](https://www.harvard.edu/). 
+I am an Assistant Professor of Electrical and Computer Engineering in the [School of Engineering and Applied Sciences](https://www.seas.harvard.edu/) (SEAS) at [Harvard University](https://www.harvard.edu/). 
 
 I direct the [Computational Robotics Group](https://computationalrobotics.seas.harvard.edu/) at Harvard University. My group is broadly interested in the intersection of theory and practice, particularly computational algorithms that are robust, efficient, offer strong performance guarantees, and supercharge the next generation of intelligent systems.
 
