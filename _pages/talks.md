@@ -39,6 +39,11 @@ talk_groups:
         slides: "https://drive.google.com/file/d/1IFd4ZrUix9IczKOC58FPzhEifKt5Sdmy/view?usp=sharing"
         recording: "https://youtu.be/nXthoML7ERc?si=ulZqsHUuhMUeksoD"
 
+      - title: "Optimization-Driven Discovery of Contact-Rich Behaviors"
+        date: "Jun 2025"
+        venue: "LAAS-CNRS, Toulouse, France"
+        slides: "https://drive.google.com/file/d/1wNl8HjoA7JPzQE0JKtkTiNpLyVZ6d244/view?usp=sharing"
+
       - title: "The Power of Modern Convex Optimization in Nonconvex Perception, Control, and Learning"
         date: "Oct 2024"
         venue: "LAAS-CNRS, Toulouse, France"
@@ -56,10 +61,28 @@ talk_groups:
         venue: "Machine Learning Seminar, University of Minnesota"
         slides: "https://drive.google.com/file/d/1KEdK59HnY2QxZVTySRvoSu4KJqOeFKia/view?usp=sharing"
         recording: "https://youtu.be/Pl_SJx6IhqM?si=nQPts_xibXIDHkee"
+
+  - name: "Control"
+    talks:
+      - title: "Online Uncertainty Set Prediction and Set-Membership Estimation"
+        date: "Jul 2025"
+        venue: "Interplay Between Machine Learning and Set-Based Identification & Control, American Control Conference"
+        slides: "https://drive.google.com/file/d/1uG9IRPO09CPpesyBKnZ0l08km9K8wPVB/view?usp=sharing"
+
+      - title: "Revisiting the Minimum Enclosing Ellipsoid of Set-Membership Estimation in Control and Perception"
+        date: "Nov 2023"
+        venue: "Autonomy Talks"
+        slides: "https://drive.google.com/file/d/1cA3xxGPWXd3AHdn5ecSHhJC8XQiJJtGV/view?usp=sharing"
+        recording: "https://youtu.be/eBtlKthnvm8?si=SRn0XhDYLwqyDYGg"
+---
+
 ---
 
 <div class="talks">
   {%- for group in page.talk_groups -%}
+  {%- unless forloop.first -%}
+  <hr class="talk-group-divider">
+  {%- endunless -%}
   <section class="talk-group">
     <h2 class="talk-group-title">{{ group.name }}</h2>
     {%- for talk in group.talks -%}
