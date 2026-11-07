@@ -14,6 +14,11 @@ talk_groups:
         venue: "Linear Algebra and Optimization Seminar, Stanford University"
         slides: "/presentation/FieldConic/"
 
+      - title: "Afterimage Slow Regions in First-Order Methods for Linear Conic Programming"
+        date: "Nov 2026"
+        venue: "INFORMS Annual Meeting"
+        slides: "https://drive.google.com/file/d/1vc9aUrgEz7AlaVwQ-UxgfNkVLWcSVUWY/view?usp=sharing"
+
       - title: "Alternating Direction Method of Multipliers for Semidefinite Programming: Theory and Practice"
         date: "Jun 2026"
         venue: "Department of Applied Mathematics, Hong Kong Polytechnic University"
