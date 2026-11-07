@@ -1,0 +1,58 @@
+<section data-number="17" data-title="Region II: Ball Near a Singular Solution" class="illustrated-theorem">
+  <h1>Region II: Ball Near a Singular Solution</h1>
+  <img class="canvas-illustration" src="assets/sdp-singular-region-canvas.svg" alt="A ball near a singular solution on the boundary of the solution disk"><div class="content compact">
+    <div class="canvas-panel">
+    <div class="theorem"><h2>Proposition (<a data-cite="KY26a" data-detail="§10.2"></a>)</h2><div>
+      <p>There exists an SDP with data \(\theta=(A,b,C)\) such that \(\operatorname{KKT}_{\mathrm{SC}}(\theta)\ne\varnothing\), and for any fixed ADMM penalty \(\sigma&gt;0\), its fixed-point set \(\ZZ_\theta\) contains a <b>singular optimal state</b> \(\bar Z\) satisfying</p>
+      <div class="blue">\[\kappa_\theta\bigl(\operatorname{Ball}_r(\bar Z)\bigr)=0\qquad\text{for every }r&gt;0.\]</div>
+    </div></div>
+    </div>
+  </div>
+</section>
+
+<section data-number="18" data-title="Vanishing Sharpness in the Difference of Two Convex Cones">
+  <h1>Vanishing Sharpness in the Difference of Two Convex Cones</h1><div class="content compact">
+    <p>Assume \(\operatorname{KKT}_{\mathrm{SC}}(\theta)\ne\varnothing\) and fix \(\bar Z\in\ZZ_\theta\). The <b>first-order directional derivative</b> is</p>
+    \[\delta_\theta'(\bar Z;H):=\lim_{t\downarrow0}\frac{\delta_\theta(\bar Z+tH)-\delta_\theta(\bar Z)}{t}.\]
+    <p>Define two closed convex cones:</p>
+    \[\begin{aligned}\mathcal T(\bar Z)&amp;:=\overline{\{\lambda(Z-\bar Z):Z\in\ZZ_\theta,\ \lambda\geq0\}}&amp;&amp;\text{(tangent directions)},\\\mathcal C(\bar Z)&amp;:=\{H\in\Sn^n:\delta_\theta'(\bar Z;H)=0\}&amp;&amp;\text{(stalled first-order directions)}.\end{aligned}\]
+    <div data-build="1">
+      <p>Always <span class="blue">\(\mathcal T(\bar Z)\subseteq\mathcal C(\bar Z)\)</span>. <b>Assume they are unequal</b> and choose <span class="blue">\(H\in\mathcal C(\bar Z)\setminus\mathcal T(\bar Z)\)</span>.</p>
+      <div class="columns" style="grid-template-columns:1.3fr 1fr">
+        <div><ul><li>\(H\in\mathcal C(\bar Z)\) means \(\delta_\theta'(\bar Z;H)=0\).</li><li>\(H\notin\mathcal T(\bar Z)\), so \(d_H:=\dist(H,\mathcal T(\bar Z))&gt;0\).</li></ul>
+          <p>Consider <b>sharpness modulus along the ray \(\bar Z+tH\)</b> as \(t\downarrow0\):</p>
+          \[\frac{\norm{\delta_\theta(\bar Z+tH)}_F}{\dist(\bar Z+tH,\ZZ_\theta)}=\frac{o(t)}{t\,d_H+o(t)}\longrightarrow0.\]</div>
+        <img class="figure" style="height:300px" src="assets/two-cones-expanded.svg" alt="Taller optimal solution set with its tangent cone inside the first-order stalled cone">
+      </div>
+    </div>
+    <ul data-build="2"><li><b>LP:</b> \(\mathcal C(\bar z)=\mathcal T(\bar z)\) at every fixed point.</li><li><b>SDP:</b> the cones are equal if (a) \(\ZZ_\theta\) is a singleton, or (b) \(\bar Z\) is SC.</li></ul>
+    <p data-build="3" class="takeaway">Are there SDP instances where the two cones are not equal?</p>
+  </div>
+</section>
+
+<section data-number="19" data-title="A 2 × 2 SDP Example: Fixed-Point Geometry">
+  <h1>A \(2\times2\) SDP Example: Fixed-Point Geometry</h1><div class="content compact">
+    <div data-component="two-by-two-setup"></div>
+    <img class="figure" style="height:500px" src="assets/sdp-two-cones-geometry.svg" alt="Fixed-point geometry and two cones for a two by two SDP">
+  </div>
+</section>
+
+<section data-number="20" data-title="A 2 × 2 SDP Example: Slow Convergence in the Cone Difference">
+  <h1>A \(2\times2\) SDP Example: Slow Convergence in \(\mathcal C(\bar Z)\setminus\mathcal T(\bar Z)\)</h1><div class="content compact">
+    <div data-component="two-by-two-setup"></div>
+    <p>Initialize ADMM at \(Z^0=\bar Z+tH\) with \(64\) different choices of \(H\) and run for 1,000 steps.</p>
+    <div class="columns three center">
+      <div><div class="movie" style="height:450px" data-video="limit-dynamics-1e-02-2x"></div><p class="red">\(t=10^{-2}\)</p></div>
+      <div data-build="1"><div class="movie" style="height:450px" data-video="limit-dynamics-1e-03-2x"></div><p class="red">\(t=10^{-3}\)</p></div>
+      <div data-build="2"><div class="movie" style="height:450px" data-video="limit-dynamics-1e-04-2x"></div><p class="red">\(t=10^{-4}\)</p></div>
+    </div>
+    <p data-build="3" class="takeaway">As \(t\downarrow0\), ADMM makes slower relative progress in \(\mathcal C(\bar Z)\setminus\mathcal T(\bar Z)\).</p>
+    <div data-build="4" class="highlight center">ADMM in \(\mathcal C(\bar Z)\setminus\mathcal T(\bar Z)\) follows approximate <b>second-order limit dynamics</b> with useful structure <a data-cite="KY26a"></a>.</div>
+  </div>
+</section>
+
+<!-- Shared editable equation block used by slides 19 and 20. -->
+<template id="two-by-two-setup">
+  \[\min_{X\in\Sn^2_+}X_{22}\quad\text{s.t. }2X_{12}-X_{22}=0,\qquad\bar Z=\operatorname{diag}(0,-1),\quad\sigma=1.\]
+  \[\mathcal T(\bar Z)=\left\{\begin{bmatrix}a&amp;0\\0&amp;0\end{bmatrix}:a\geq0\right\}\ \blue{\subsetneq}\ \mathcal C(\bar Z)=\left\{\begin{bmatrix}a&amp;b\\b&amp;-b\end{bmatrix}:a\geq0,\ b\in\R\right\}.\]
+</template>

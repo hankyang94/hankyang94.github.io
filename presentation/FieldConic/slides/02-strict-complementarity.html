@@ -1,0 +1,58 @@
+<section data-number="14" data-title="Region I: Ball Near a Strictly Complementary Solution" class="illustrated-theorem">
+  <h1>Region I: Ball Near a Strictly Complementary Solution (SDP)</h1>
+  <img class="canvas-illustration" src="assets/sdp-sc-region-canvas.svg" alt="A ball around a strictly complementary point on the solution disk">
+  <div class="content compact">
+    <div class="canvas-panel">
+    <div class="theorem"><h2>Theorem (<a data-cite="KJY26" data-detail="Theorem 5"></a>)</h2><div>
+      <p>Given an SDP with \(\theta=(A,b,C)\), fix \(\sigma&gt;0\) for ADMM. Let \((\bar X_{\mathrm{SC}},\bar y_{\mathrm{SC}},\bar S_{\mathrm{SC}})\) be a <b>strictly complementary (SC) KKT point</b> and set \(\bar Z_{\mathrm{SC}}=\bar X_{\mathrm{SC}}-\sigma\bar S_{\mathrm{SC}}\) (a nonsingular state).</p>
+      <p>For all sufficiently small \(r&gt;0\), <span class="blue">\(\kappa_\theta(\operatorname{Ball}_r(\bar Z_{\mathrm{SC}}))&gt;0\)</span>, where
+      \(\operatorname{Ball}_r(\bar Z_{\mathrm{SC}}):=\{Z\in\Sn^n:\norm{Z-\bar Z_{\mathrm{SC}}}_F\leq r\}\).</p>
+      <p>Consequently, ADMM <b>converges locally R-linearly</b> after entering this forward-invariant ball.</p>
+    </div></div>
+    <ul data-build="1" class="canvas-notes"><li><b>First guarantee under SC alone:</b> no nondegeneracy; nonunique optima allowed.</li>
+    <li><b>A posteriori check:</b> test nonsingularity of the computed limiting state, <span class="blue">\(\lambda_{\min}(|\bar Z|):=\min_i|\lambda_i(\bar Z)|&gt;0\)</span>.</li></ul>
+    </div>
+  </div>
+</section>
+
+<section data-number="15" data-title="Numerical Experiments">
+  <h1>Numerical Experiments</h1><div class="content centered-content compact">
+    <div class="columns three center">
+      <div><p>MAXCUT</p><div class="convergence-plot">
+        <div class="eigenvalue-label">\(\lambda_{\min}(|Z_\star|)=1.1\times10^{-1}\)</div>
+        <img class="figure" src="assets/sc-maxcut-g9-curves.png" alt="MAXCUT convergence">
+      </div></div>
+      <div><p>Hamming graph</p><div class="convergence-plot">
+        <div class="eigenvalue-label">\(\lambda_{\min}(|Z_\star|)=3.1\times10^{-2}\)</div>
+        <img class="figure" src="assets/sc-hamming-9-8-curves.png" alt="Hamming graph convergence">
+      </div></div>
+      <div><p>Structure from motion</p><div class="convergence-plot">
+        <div class="eigenvalue-label">\(\lambda_{\min}(|Z_\star|)=8.6\times10^{1}\)</div>
+        <img class="figure" src="assets/sc-sfm-xm149-curves.png" alt="Structure from motion convergence">
+      </div></div>
+    </div>
+    <p class="center small"><span class="red">\(r_{\max}^{(k)}\)</span>: maximum KKT residual　　<span class="blue">\(\norm{Z^{k+1}-Z^k}_F\)</span>: fixed-point residual</p>
+    <p>All three limits are numerically SC; the semilog tails show local linear convergence.</p>
+  </div>
+</section>
+
+<section data-number="16" data-title="Numerical Experiments">
+  <h1>Numerical Experiments</h1><div class="content centered-content compact">
+    <div class="columns three center">
+      <div><p>BQP: Primal rank-one</p><div class="convergence-plot">
+        <div class="eigenvalue-label">\(\lambda_{\min}(|Z_\star|)=4.7\times10^{-1}\)</div>
+        <img class="figure" src="assets/sc-bqp-r1-20-curves.png" alt="Rank-one BQP convergence">
+      </div></div>
+      <div><p>BQP</p><div class="convergence-plot">
+        <div class="eigenvalue-label">\(\lambda_{\min}(|Z_\star|)=1.2\times10^{-1}\)</div>
+        <img class="figure" src="assets/sc-bqp-r2-20-curves.png" alt="BQP convergence">
+      </div></div>
+      <div><p>Quasar</p><div class="convergence-plot">
+        <div class="eigenvalue-label">\(\lambda_{\min}(|Z_\star|)=2.8\times10^{-2}\)</div>
+        <img class="figure" src="assets/sc-quasar-500-curves.png" alt="Quasar convergence">
+      </div></div>
+    </div>
+    <p class="center small"><span class="red">\(r_{\max}^{(k)}\)</span>: maximum KKT residual　　<span class="blue">\(\norm{Z^{k+1}-Z^k}_F\)</span>: fixed-point residual</p>
+    <p>All three limits are numerically SC; degeneracy and nonuniqueness do not prevent a linear tail.</p>
+  </div>
+</section>

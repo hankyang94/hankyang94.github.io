@@ -1,0 +1,210 @@
+<!-- Edit slide text and LaTeX equations here; save and refresh Chrome. -->
+<section data-number="1" data-title="A Field Theory of First-Order Methods" class="title-slide with-portrait">
+  <div class="content center">
+    <h1>A Field Theory of First-Order Methods<br>for Linear Conic Optimization</h1>
+    <p class="author">Heng Yang</p>
+    <p>Assistant Professor of Electrical and Computer Engineering<br>Harvard University</p>
+    <p class="spaced small">Joint work with Shucheng Kang</p>
+    <img class="collaborator-photo" src="assets/ksc.jpg" alt="Shucheng Kang" width="150" height="150">
+    <p class="spaced small">Linear Algebra and Optimization Seminar<br>Stanford University<br>November 4, 2026</p>
+  </div>
+</section>
+
+<section data-number="2" data-title="Linear Conic Optimization (Conic-LP)">
+  <h1>Linear Conic Optimization (Conic-LP)</h1>
+  <div class="content compact">
+    <div class="columns two">
+      <div><b>Primal</b>\[\min_x\ \ip{c}{x}\qquad Ax=b,\quad x\in\KK.\]</div>
+      <div><b>Dual</b>\[\max_{y,s}\ \ip{b}{y}\qquad A^*y+s=c,\quad s\in\KK^*.\]</div>
+    </div>
+    <p>Problem data: <span class="blue">\(\theta=(A,b,c)\)</span>.<br>
+    For SDP, write \(x=X\), \(s=S\), \(c=C\) and use the Frobenius inner product.</p>
+    <div class="columns three center spaced cone-headings">
+      <div><h3>Linear Program (LP)</h3><p>\(\KK=\R_+^n\)</p></div>
+      <div><h3>Second-Order Cone Program (SOCP)</h3><p>\(\KK=\{(t,u):t\geq \|u \|_2\}\)</p></div>
+      <div><h3>Semidefinite Program (SDP)</h3><p>\(\KK=\Sn_+^n\)</p></div>
+    </div>
+    <img class="figure" src="assets/cone-examples.svg" alt="Polyhedral cone, second-order cone and elliptope">
+  </div>
+</section>
+
+<section data-number="3" data-title="KKT Solutions and Strict Complementarity">
+  <h1>KKT Solutions and Strict Complementarity</h1>
+  <div class="content">
+    <p><b>Karush–Kuhn–Tucker (KKT) solution set</b></p>
+    \[
+      \operatorname{KKT}(\theta):=\left\{(x,y,s):\quad
+      \begin{array}{ll}
+        Ax=b,\quad x\in\KK & \qquad\text{(primal feasibility)}\\[3pt]
+        A^*y+s=c,\quad s\in\KK^* & \qquad\text{(dual feasibility)}\\[3pt]
+        \ip{x}{s}=0 & \qquad\text{(complementarity)}
+      \end{array}\right\}.
+    \]
+    <p><b>Standing assumptions:</b> <span class="blue">\(\operatorname{KKT}(\theta)\ne\varnothing\)</span> and
+      <span class="blue">\(A\) is surjective</span> (\(AA^*\succ0\)).</p>
+    <div data-build="1" class="spaced">
+      <p><b>Strictly complementary (SC) solutions for SDP</b></p>
+      \[\operatorname{KKT}_{\mathrm{SC}}(\theta):=\bigl\{(X,y,S)\in\operatorname{KKT}(\theta):X+S\succ0\bigr\}.\]
+      <p>For a KKT pair,</p>
+      \[\boxed{X+S\succ0\quad\Longleftrightarrow\quad\rank X+\rank S=n.}\]
+    </div>
+  </div>
+</section>
+
+<section data-number="4" data-title="First-Order Methods">
+  <h1>First-Order Methods</h1>
+  <div class="content compact">
+    <p>We consider a family of <b>primal–dual splitting methods</b>, including:</p>
+    <div class="columns" style="grid-template-columns:1.12fr 1fr">
+      <div><b>ADMM:</b> Alternating Direction Method of Multipliers
+        <div class="math-small dim">\[\begin{aligned}y^{k+1}&amp;=(AA^*)^{-1}\!\bigl[A(c-s^k)+\sigma^{-1}(b-Ax^k)\bigr],\\s^{k+1}&amp;=\Pi_{\KK^*}\!\bigl(c-A^*y^{k+1}-\sigma^{-1}x^k\bigr),\\x^{k+1}&amp;=x^k+\sigma\bigl(A^*y^{k+1}+s^{k+1}-c\bigr).\end{aligned}\]</div>
+        <span class="dim">\(\sigma&gt;0\).</span>
+      </div>
+      <div><b>PDHG:</b> Primal–Dual Hybrid Gradient
+        <div class="math-small dim">\[\begin{aligned}x^{k+1}&amp;=\Pi_{\KK}\!\left[x^k-\eta_x(c-A^*y^k)\right],\\y^{k+1}&amp;=y^k+\eta_y\!\left[b-A(2x^{k+1}-x^k)\right].\end{aligned}\]</div>
+        <span class="dim">\(\eta_x,\eta_y&gt;0\), \(\eta_x\eta_y\norm{A}_{\rm op}^2&lt;1\).</span><br>
+        \(\Pi_{\mathcal C}\): orthogonal projection onto \(\mathcal C\).
+      </div>
+    </div>
+    <ul><li>Under mild conditions, they converge to a <b>KKT solution</b>.</li>
+      <li><b>Easy to implement:</b> linear algebra and cone projections.</li>
+      <li>For SDP with large \(n\), the bottleneck is <span class="red"><b>projection onto the PSD cone</b> \(\Sn_+^n\)</span>.</li></ul>
+    <div data-build="1">
+      <p><b>Normalized KKT residuals</b> at \((x^k,y^k,s^k)\), with \(x^k\in\KK\) and \(s^k\in\KK^*\):</p>
+      <div class="columns three center small">
+        <div>Primal infeasibility\[r_{\mathrm p}^{(k)}:=\frac{\norm{Ax^k-b}}{1+\norm b}.\]</div>
+        <div>Dual infeasibility\[r_{\mathrm d}^{(k)}:=\frac{\norm{A^*y^k+s^k-c}}{1+\norm c}.\]</div>
+        <div>Relative duality gap\[r_{\mathrm g}^{(k)}:=\frac{|\ip{c}{x^k}-\ip{b}{y^k}|}{1+|\ip{c}{x^k}|+|\ip{b}{y^k}|}.\]</div>
+      </div>
+      <p class="center blue">\(\boxed{r_{\max}^{(k)}:=\max\{r_{\mathrm p}^{(k)},r_{\mathrm d}^{(k)},r_{\mathrm g}^{(k)}\}}\).</p>
+    </div>
+  </div>
+</section>
+
+<section data-number="5" data-title="First-Order Methods as Fixed-Point Iterations">
+  <h1>First-Order Methods as Fixed-Point Iterations</h1>
+  <div class="content">
+    <p>Abstract the algorithm into a <b>fixed-point iteration</b>:</p>
+    \[\boxed{z^{k+1}=T_\theta(z^k),\qquad z^k\in\HH.}\]
+    <p>\(\theta=(A,b,c)\) is the problem data; \(z\) is the algorithm’s fixed-point state.</p>
+    <p>The <b>fixed-point set encodes KKT solutions</b>:</p>
+    \[\ZZ_\theta:=\Fix T_\theta=\bigl\{z\in\HH:T_\theta(z)=z\bigr\}.\]
+    <div data-build="1" class="spaced compact">
+      <p><b>Concrete example: ADMM on SDP</b>, with matrix state \(Z\in\Sn^n\):</p>
+      <div class="blue">\[T_\theta(Z)=Z-P\bigl(\Pi_+(Z)-X_b\bigr)-P^\perp\bigl(\Pi_-(Z)+\sigma C\bigr).\]</div>
+      <p>\(P=A^*(AA^*)^{-1}A\), \(P^\perp=\Id-P\), \(X_b=A^*(AA^*)^{-1}b\),<br>
+      \(\Pi_+=\Pi_{\Sn_+^n}\), \(\Pi_-=\Id-\Pi_+\).</p>
+      <div class="blue">\[\ZZ_\theta=\bigl\{X-\sigma S:(X,y,S)\in\operatorname{KKT}(\theta)\bigr\}.\]</div>
+    </div>
+  </div>
+</section>
+
+<section data-number="6" data-title="Convergence Dynamics of First-Order Methods">
+  <h1>Convergence Dynamics of First-Order Methods</h1>
+  <div class="content compact">
+    <div class="columns two">
+      <div><b>Classical theory and the usual perception</b><br>Worst-case ergodic gap: \(O(1/k)\) <a data-cite="HY12"></a>.<br>
+      Max KKT residual drops fast for a few thousand iterations, then plateaus. We lose patience and stop.<br><em>The sublinear-rate picture seems to fit.</em></div>
+      <img class="figure" style="height:210px" src="assets/classical-convergence.svg" alt="A residual trace that first drops quickly, then appears to plateau">
+    </div>
+    <div data-build="1">
+      <p><b>ADMM on SDPs reveals at least three macroscopic regimes:</b></p>
+      <div class="columns three center"><div>Fast linear convergence</div><div>Persistent slow progress</div><div>Several plateaus, then fast</div></div>
+      <img class="figure" style="height:290px" src="assets/regimes.svg" alt="Three convergence regimes of ADMM">
+      <p class="center small"><span class="red">\(r_{\max}^{(k)}\)</span>: maximum KKT residual.　<span class="blue">\(\norm{Z^{k+1}-Z^k}_F\)</span>: fixed-point residual.</p>
+      <p class="takeaway">Convergence varies across the state space: fast in some regions, stuck in others.</p>
+    </div>
+  </div>
+</section>
+
+<section data-number="7" data-title="Outline of the Talk">
+  <h1>Outline of the Talk</h1><div class="content outline">
+    <ol><li class="blue"><b>Residual Field and Region-Wise Sharpness</b></li><li>Four Choices of Region: Fast and Slow Convergence</li><li>GPU-accelerated Approximate PSD Cone Projection</li></ol>
+  </div>
+</section>
+
+<section data-number="8" data-title="From Temporal to Spatial Analysis of Dynamical Systems">
+  <h1>From Temporal to Spatial Analysis of Dynamical Systems</h1>
+  <div class="content compact center">
+    <div class="columns two">
+      <div><p><b>Temporal: follow a trajectory</b></p><p>How does one electron move over time?</p>
+        <div class="movie" style="height:320px" data-video="trajectory-charged-particle" data-poster="jpg"></div>
+        <p>\(t\longmapsto x(t)\)</p>
+        <!-- <p class="small"><a href="https://ophysics.com/em8.html">Play trajectory animation (oPhysics)</a></p> -->
+      </div>
+      <div><p><b>Spatial: study the field</b></p><p>How does a magnet influence space?</p>
+        <div class="movie" style="height:320px" data-video="magnet-spatial" data-poster="jpg"></div>
+        <p>\(x\longmapsto B(x)\)</p>
+        <!-- <p class="small"><a href="https://phet.colorado.edu/sims/html/magnet-and-compass/latest/magnet-and-compass_all.html">Explore the field map (PhET)</a></p> -->
+      </div>
+    </div>
+    <p>The field determines the motion through \(\dot x=v\),　\(m\dot v=-e\,v\times B(x)\).</p>
+    <p class="takeaway">From tracking an orbit in time to understanding the field across state space.</p>
+  </div>
+</section>
+
+<section data-number="9" data-title="Residual Field">
+  <h1>Residual Field</h1><div class="content compact">
+    <p>A dynamic algorithm becomes a <b>static field</b>:</p>
+    \[z^{k+1}=T_\theta(z^k)\qquad\longrightarrow\qquad\boxed{\delta_\theta(z):=T_\theta(z)-z.}\]
+    <p>Study the <b>spatial variation</b> of \(\delta_\theta\); its zero set is \(\ZZ_\theta=\Fix T_\theta=\{z:\delta_\theta(z)=0\}\).</p>
+    <div data-build="1" class="columns two spaced">
+      <div><p><b>Example 1: ADMM on an LP</b> (\(\sigma=1\))</p>
+        \[\min_{x\geq0}\ x_1\qquad\text{s.t. }x_1-x_2=0.\]
+        <p>State \(z=x-s\in\R^2\); fixed-point segment:</p>
+        \[\ZZ_\theta=\{(y-1,-y):0\leq y\leq1\}.\]
+        <p>Arrows indicate <b>field direction</b>.</p><p>Background color encodes <b>field strength</b> \(\norm{\delta_\theta(z)}_2\).</p>
+        <p>The green segment is the <b>zero set</b>.</p></div>
+      <img class="figure" style="height:440px" src="assets/lp-residual-field.svg" alt="LP residual field and zero-set segment">
+    </div>
+  </div>
+</section>
+
+<section data-number="10" data-title="Residual Field">
+  <h1>Residual Field</h1><div class="content compact">
+    <p>A dynamic algorithm becomes a <b>static field</b>:</p>
+    \[z^{k+1}=T_\theta(z^k)\qquad\longrightarrow\qquad\boxed{\delta_\theta(z):=T_\theta(z)-z.}\]
+    <p>Study the <b>spatial variation</b> of \(\delta_\theta\); its zero set is \(\ZZ_\theta=\Fix T_\theta=\{z:\delta_\theta(z)=0\}\).</p>
+    <div class="columns two spaced">
+      <div><b>Example 2: ADMM on an SDP</b> (\(\sigma=1\))
+        \[\min_{X\in\Sn^2}\ 0\qquad\text{s.t. }\operatorname{tr}X=1,\quad X\succeq0.\]
+        <p>State \(Z=X-S\in\Sn^2\), with coordinates</p>
+        \[Z=\frac12\begin{bmatrix}1+w+u&amp;v\\v&amp;1+w-u\end{bmatrix}.\]
+        <p>The fixed-point set is a <b>disk</b>:</p>
+        \[\ZZ_\theta=\{Z\succeq0:\operatorname{tr}Z=1\},\qquad w=0,\ u^2+v^2\leq1.\]
+        <p class="small">3D arrows: field direction.<br>Arrow color: field strength \(\norm{\delta_\theta(Z)}_F\).</p></div>
+      <img class="figure" style="height:430px" src="assets/sdp-residual-disk.svg" alt="Residual field around the SDP solution disk">
+    </div>
+  </div>
+</section>
+
+<section data-number="11" data-title="Region-Wise Sharpness">
+  <h1>Region-Wise Sharpness</h1><div class="content compact center">
+    <p><b>Sharpness modulus</b> over a region \(\region\subseteq\HH\):</p>
+    \[\boxed{\kappa_\theta(\region):=\inf_{z\in\region\setminus\ZZ_\theta}\frac{\red{\norm{\delta_\theta(z)}_Q}}{\blue{\dist_Q(z,\ZZ_\theta)}}.}\]
+    <p><span class="red">Field strength</span> (backward error) divided by <span class="blue">distance to the fixed-point set</span> (forward error).</p>
+    <p class="small">Both norm and distance use the algorithm’s metric \(Q\succ0\), with \( \|u\|_Q=\sqrt{\ip{u}{Qu}}\); for ADMM, <span class="blue">\(Q=\Id\)</span>.</p>
+    <img class="figure" style="height:420px" src="assets/lp-sharpness.svg" alt="Sharpness compares residual field strength with solution distance">
+  </div>
+</section>
+
+<section data-number="12" data-title="Averagedness Connects Sharpness to Convergence">
+  <h1>Averagedness Connects Sharpness to Convergence</h1><div class="content compact">
+    <p><b>ADMM, PDHG, and sGS-ADMM</b> are <b>\(\alpha\)-averaged</b> maps with <span class="blue">\(\alpha=\tfrac12\)</span>:</p>
+    \[T_\theta=(1-\alpha)\Id+\alpha N,\qquad 0&lt;\alpha&lt;1,\quad N\text{ nonexpansive in } \|\cdot \|_Q.\]
+    <div class="theorem"><h2>Lemma (Positive Sharpness Gives One-Step Contraction)</h2><div>
+      <p>Let \(\ZZ_\theta\ne\varnothing\) and \(\boxed{\blue{0&lt;\kappa:=\kappa_\theta(\region)&lt;\infty}}\).
+      Define \(q:=\sqrt{1-\tfrac{1-\alpha}{\alpha}\kappa^2}\in[0,1)\). For every \(z\in\region\),</p>
+      <div class="math-small">\[\begin{aligned}\boxed{\dist_Q(T_\theta z,\ZZ_\theta)^2}&amp;\leq\dist_Q(z,\ZZ_\theta)^2-\frac{1-\alpha}{\alpha}\norm{\delta_\theta(z)}_Q^2&amp;&amp;\text{(definition of $\alpha$-averagedness)}\\[5pt]&amp;\leq\boxed{q^2\dist_Q(z,\ZZ_\theta)^2}&amp;&amp;\text{(positive sharpness).}\end{aligned}\]</div>
+    </div></div>
+    <p>If \(z^0,\ldots,z^{k-1}\in\region\), then</p>
+    \[\boxed{\dist_Q(z^k,\ZZ_\theta)\leq q^k\dist_Q(z^0,\ZZ_\theta).}\]
+    <p data-build="1" class="takeaway">Central question: where in the state space is the residual field sharp?</p>
+  </div>
+</section>
+
+<section data-number="13" data-title="Outline of the Talk">
+  <h1>Outline of the Talk</h1><div class="content outline">
+    <ol><li class="dim">Residual Field and Region-Wise Sharpness</li><li class="blue"><b>Four Choices of Region: Fast and Slow Convergence</b></li><li class="dim">GPU-accelerated Approximate PSD Cone Projection</li></ol>
+  </div>
+</section>

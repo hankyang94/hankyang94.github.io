@@ -1,0 +1,105 @@
+<section data-number="38" data-title="Outline of the Talk">
+  <h1>Outline of the Talk</h1><div class="content outline">
+    <ol><li class="dim">Residual Field and Region-Wise Sharpness</li><li class="dim">Four Choices of Region: Fast and Slow Convergence</li><li class="blue"><b>GPU-accelerated Approximate PSD Cone Projection</b></li></ol>
+  </div>
+</section>
+
+<section data-number="39" data-title="PSD Cone Projection: A Spectral Operator">
+  <h1>PSD Cone Projection: A Spectral Operator</h1><div class="content compact">
+    <p class="center blue"><b>Bottleneck for scaling first-order methods for SDP: PSD cone projection</b></p>
+    <p>Recall the definition of PSD cone projection:</p>
+    \[\PSDproj(X):=\operatorname*{arg\,min}_{Y\in\Sn_+^n}\frac12\norm{Y-X}_F^2.\]
+    <p>Closed-form solution <a data-cite="Hig88"></a>: let \(X=Q\Lambda Q^\top\) be the spectral decomposition.</p>
+    \[\PSDproj(X)=Q\operatorname{diag}\bigl(\max\{\lambda_1,0\},\ldots,\max\{\lambda_n,0\}\bigr)Q^\top.\]
+    <div data-component="spectral-observation"></div>
+    <p data-build="1" class="center red spaced">Idea: approximate \(\frelu\) with another function whose spectral operator is easier to evaluate?</p>
+  </div>
+</section>
+
+<section data-number="40" data-title="Polynomial Filtering">
+  <h1>Polynomial Filtering</h1><div class="content compact">
+    <div data-component="spectral-observation"></div>
+    <p>Suppose \(p(x)\) is a univariate <span class="blue">polynomial filter</span> such that \(p(x)\approx\frelu(x)\). Then</p>
+    \[\begin{aligned}\PSDproj(X)&amp;=Q\operatorname{diag}\bigl(\frelu(\lambda_1),\ldots,\frelu(\lambda_n)\bigr)Q^\top\\&amp;\approx Q\operatorname{diag}\bigl(p(\lambda_1),\ldots,p(\lambda_n)\bigr)Q^\top\\&amp;=\blue{p(X)}.\end{aligned}\]
+    <p>Evaluating \(p(X)\) only requires general matrix-matrix multiplication (GEMM)!</p>
+    <p>However, \(\frelu\) is nonsmooth at \(x=0\). An accurate approximation (e.g., using Chebyshev polynomials) needs a high-degree \(p(x)\) and many GEMMs.</p>
+    <p data-build="1" class="center red spaced">Need a high-degree polynomial \(p(x)\) that can be evaluated with a small number of GEMMs!</p>
+  </div>
+</section>
+
+<section data-number="41" data-title="Composite Polynomial Filtering">
+  <h1>Composite Polynomial Filtering</h1><div class="content compact">
+    <p>Restrict \(p(x)\) to be a <span class="blue">composition</span> of low-degree polynomials:</p>
+    \[p(x)=f_T\circ f_{T-1}\circ\cdots\circ f_1(x),\qquad\deg(f_i)\leq d_i,\quad i=1,\ldots,T.\]
+    <p>Degree at most <span class="blue">\(\prod_{i=1}^T d_i\)</span>; evaluating \(p(X)\) takes at most <span class="blue">\(\sum_{i=1}^T d_i\)</span> GEMMs.</p>
+    <div class="highlight" id="best-approximation">
+      <p>Finding the <span class="blue">“best” composite polynomial filter</span> (fix \((d_1,\ldots,d_T)\)):</p>
+      <div class="math-small">\[\inf_{f_1,\ldots,f_T}\ \max_{x\in[-1,1]}\left|f_T\circ\cdots\circ f_1(x)-\frelu(x)\right|\quad\text{s.t. }f_i\in\mathbb R_{d_i}[x],\ i=1,\ldots,T.\tag{1}\]</div>
+    </div>
+    <div data-build="1">
+      <p class="center red spaced">To the best of our knowledge, <a href="#best-approximation">(1)</a> cannot be efficiently solved.</p>
+      <div class="highlight"><p class="center blue"><b>A Two-stage Strategy</b> <a data-cite="KHGY26"></a></p>
+        <ul><li>Optimize a surrogate objective of <a href="#best-approximation">(1)</a> using dynamic programming <a data-cite="LLNK22"></a>.</li>
+        <li>Gradient-based refinement using the true objective <a href="#best-approximation">(1)</a>.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-number="42" data-title="Benchmark and Evaluation: Setup">
+  <h1>Benchmark and Evaluation: Setup</h1><div class="content compact">
+    <p><b>Hardware.</b> NVIDIA B200 GPUs (\(192\) GB RAM) running CUDA 12.9 and NVIDIA H100 GPUs (\(80\) GB RAM) running CUDA 12.4. On B200, enable the <code>BF16x9</code> emulation introduced in CUDA 12.9 for the Blackwell architecture.</p>
+    <p><b>Methods.</b> Compare GPU implementations. For a \(10{,}000\times10{,}000\) dense symmetric matrix, MATLAB <code>eig</code> takes about <span class="red">15 seconds</span> on a high-performance workstation; NVIDIA’s <code>cuSOLVER</code> takes about <span class="blue">1 second</span> on B200 and H100.</p>
+    <ul class="small">
+      <li><code>cuSOLVER FP64</code>: classical factorization with <code>cuSOLVER</code> (ground truth).</li>
+      <li><code>cuSOLVER FP32</code>: same as <code>cuSOLVER FP64</code>, in single precision.</li>
+      <li><code>Polar Express FP32</code>: composite filter <a data-cite="APMG25"></a>, \(31\) GEMMs.</li>
+      <li><code>Polar Express FP16</code>: composite filter <a data-cite="APMG25"></a>, \(22\) GEMMs.</li>
+      <li><code>Newton–Schulz FP32</code>: fixed-point filter <a data-cite="FG17"></a>, \(31\) GEMMs.</li>
+      <li><code>Newton–Schulz FP16</code>: fixed-point filter <a data-cite="FG17"></a>, \(21\) GEMMs.</li>
+      <li><span class="blue"><code>Composite FP32</code></span>: our method in <code>FP32</code>, \(31\) GEMMs.</li>
+      <li><span class="blue"><code>Composite FP32 (em.)</code></span>: same as <code>Composite FP32</code>, with <code>BF16x9</code> emulation on B200.</li>
+      <li><span class="blue"><code>Composite FP16</code></span>: our method in <code>FP16</code>, \(22\) GEMMs.</li>
+    </ul>
+  </div>
+</section>
+
+<section data-number="43" data-title="Benchmark and Evaluation: Setup">
+  <h1>Benchmark and Evaluation: Setup</h1><div class="content centered-content">
+    <p><b>Datasets.</b> 33 dense datasets from the Matrix Depot package <a data-cite="ZH16"></a>. For each dataset, generate three instances, of sizes \(5000\), \(10000\), and \(20000\).</p>
+    <p><b>Metrics.</b> For the same matrix, both metrics are averaged over five runs.</p>
+    <ul><li><b>Time:</b> includes Lanczos iterations, data type conversion, and composite polynomial filtering.</li>
+      <li><b>Relative error:</b> for input \(A\in\Sn^n\) and output \(A_+\),
+      \[\frac{\norm{A_+-\PSDproj(A)}_F}{\norm{\PSDproj(A)}_F},\]
+      where \(\PSDproj(A)\) is computed using <code>cuSOLVER FP64</code>.</li></ul>
+  </div>
+</section>
+
+<section data-number="44" data-title="Benchmark and Evaluation: Results">
+  <h1>Benchmark and Evaluation: Results</h1><div class="content dense">
+    <img class="figure" style="height:240px" src="assets/psd-projection-B200-time-avg.svg" alt="B200 projection timing benchmark">
+    <img class="figure" style="height:240px" src="assets/psd-projection-B200-error-avg.svg" alt="B200 projection accuracy benchmark">
+    <ul><li>Our filters outperform other filters of the same precision in relative error.</li>
+      <li>In <span class="blue"><code>FP16</code></span>, <code>Composite FP16</code> reliably reaches \(10^{-3}\) relative error in milliseconds, <span class="blue">over \(10\times\) faster</span> than <code>cuSOLVER FP64</code> and <code>cuSOLVER FP32</code>.</li>
+      <li>In <code>FP32</code>, <code>cuSOLVER FP32</code> generally has the highest accuracy; <code>Composite FP32</code> with emulation achieves speedups of <span class="blue">up to \(2\times\)</span>.</li></ul>
+  </div>
+</section>
+
+<section data-number="45" data-title="Integration into ADMM">
+  <h1>Integration into ADMM</h1><div class="content compact center">
+    <div class="columns four" style="width:86%;margin:0 auto">
+      <div><img class="figure" style="height:505px" src="assets/psd-projection-G55mc.png" alt="ADMM with approximate projections, G55"><p>(a) \(n=5000\)</p></div>
+      <div><img class="figure" style="height:505px" src="assets/psd-projection-G59mc.png" alt="ADMM with approximate projections, G59"><p>(b) \(n=5000\)</p></div>
+      <div><img class="figure" style="height:505px" src="assets/psd-projection-G60_mb.png" alt="ADMM with approximate projections, G60 mb"><p>(c) \(n=7000\)</p></div>
+      <div><img class="figure" style="height:505px" src="assets/psd-projection-G60mc.png" alt="ADMM with approximate projections, G60"><p>(d) \(n=7000\)</p></div>
+    </div>
+    <div data-build="1"><p><span class="red">Red segments:</span> low-precision projection phase; <span class="blue">blue segments:</span> high-precision phase.</p>
+      <p class="blue">Spectral deflation further improves the accuracy of PSD cone projection <a data-cite="SKY26"></a>.</p></div>
+  </div>
+</section>
+
+<template id="spectral-observation">
+  <div class="highlight"><p>Key observation: \(\PSDproj\) is the <span class="blue">spectral operator</span> generated by <span class="blue">\(\frelu(x)=\max\{x,0\}\)</span>.</p>
+    \[\PSDproj(X)=Q\operatorname{diag}\bigl(\blue{\frelu(\lambda_1)},\ldots,\blue{\frelu(\lambda_n)}\bigr)Q^\top.\]
+  </div>
+</template>

@@ -1,0 +1,185 @@
+<section data-number="24" data-title="From Local Analysis to Global Analysis">
+  <h1>From Local Analysis to Global Analysis</h1><div class="content centered-content compact">
+    <p>Regions I–III developed a <span class="blue">local analysis</span> near the optimal solution set.</p>
+    <div class="columns three center spaced"><div>Fast linear convergence</div><div>Persistent slow progress</div><div>Several plateaus, then fast</div></div>
+    <img class="figure" style="height:300px" src="assets/regimes-local.svg" alt="Local convergence tails circled on three ADMM traces">
+    <p class="center small"><span class="red">\(r_{\max}^{(k)}\)</span>: maximum KKT residual　　<span class="blue">\(\norm{Z^{k+1}-Z^k}_F\)</span>: fixed-point residual</p>
+    <div style="height:115px"></div>
+  </div>
+</section>
+
+<section data-number="25" data-title="From Local Analysis to Global Analysis">
+  <h1>From Local Analysis to Global Analysis</h1><div class="content centered-content compact">
+    <p>Regions I–III developed a <span class="blue">local analysis</span> near the optimal solution set.</p>
+    <div class="columns three center spaced"><div>Fast linear convergence</div><div>Persistent slow progress</div><div>Several plateaus, then fast</div></div>
+    <img class="figure" style="height:300px" src="assets/regimes-global.svg" alt="Local tails and nonlocal slow plateaus highlighted on ADMM convergence plots">
+    <p class="center small"><span class="red">\(r_{\max}^{(k)}\)</span>: maximum KKT residual　　<span class="blue">\(\norm{Z^{k+1}-Z^k}_F\)</span>: fixed-point residual</p>
+    <div style="min-height:115px"><p class="center red">Multiple slow plateaus can dominate ADMM’s runtime before it reaches fast local convergence.</p>
+    <p class="takeaway">What mechanism creates these long, seemingly nonlocal slow phases?</p></div>
+  </div>
+</section>
+
+<section data-number="26" data-title="Nonlocal Slow Convergence in LPs and SDPs">
+  <h1>Nonlocal Slow Convergence in LPs and SDPs</h1><div class="content centered-content compact">
+    <p>Regions I–III developed a <span class="blue">local analysis</span> near the optimal solution set.</p>
+    <div class="columns three center spaced">
+      <div><h3>(a) LP: PDHG</h3>
+        <img class="figure" style="height:300px" src="assets/motivation-lp-glass4.svg" alt="PDHG on the glass4 LP: a long nonlocal slow phase circled before the local linear tail">
+        <p class="small">Lu–Yang <a data-cite="LY25" data-detail="Fig. 4"></a></p>
+      </div>
+      <div><h3>(b) LP: HPR</h3>
+        <img class="figure" style="height:300px" src="assets/motivation-lp-hpr.svg" alt="HPR on the nug08-3rd LP with different restart strategies: the slow phase is circled before the local linear tails">
+        <p class="small">Chen et al. <a data-cite="CSYZZ25" data-detail="Fig. 4.2(b)"></a></p>
+      </div>
+      <div><h3>(c) SDP: ADMM</h3>
+        <img class="figure" style="height:300px" src="assets/motivation-sdp-plateaus.svg" alt="The same SDP example: multiple nonlocal slow plateaus circled before a local linear tail">
+        <p class="small">Kang–Yang <a data-cite="KY26a"></a></p>
+      </div>
+    </div>
+    <p class="center red">Long nonlocal slow phases occur in both LPs and SDPs.</p>
+    <p class="takeaway">What mechanism creates these long, seemingly nonlocal slow phases?</p>
+  </div>
+</section>
+
+<section data-number="27" data-title="A Two-Variable LP (Continued)">
+  <h1>A Two-Variable LP (Continued)</h1><div class="content compact">
+    \[\min_{x\geq0}x_1\quad\text{s.t. }x_1-x_2=\blue{\boldsymbol{\varepsilon}},\qquad\blue{\boldsymbol{\varepsilon}}\geq0.\]
+    <p>For ADMM with <span class="blue">\(\sigma=1\)</span>, fixed points encode KKT solutions as \(z=x-s\).</p>
+    <div class="columns two">
+      <div><p><b>At \(\varepsilon=0\)</b></p>\[x^\star=(0,0),\qquad y^\star\in[0,1].\]
+        <p>ADMM’s fixed set is a segment:</p>\[\ZZ_0=L=\{(y-1,-y):0\leq y\leq1\}.\]
+        <img class="figure" style="height:290px" src="assets/lp-fixed-zero.svg" alt="At epsilon zero the fixed-point set is the segment from (-1,0) to (0,-1)"></div>
+      <div><p><b>At any \(\varepsilon&gt;0\)</b></p>\[x^\star=(\varepsilon,0),\qquad y^\star=1.\]
+        <p>Only one fixed point survives:</p>\[\ZZ_\varepsilon=\{(\varepsilon,-1)\}.\]
+        <img class="figure" style="height:290px" src="assets/lp-fixed-positive.svg" alt="At positive epsilon only the fixed point (epsilon,-1) survives"></div>
+    </div>
+    <p class="takeaway">A tiny data change collapses a segment of fixed points to one point.</p>
+  </div>
+</section>
+
+<section data-number="28" data-title="A Two-Variable LP (Continued)">
+  <h1>A Two-Variable LP (Continued)</h1><div class="content compact">
+    <div class="columns two center">
+      <div class="movie" style="height:580px" data-video="lp-eps-0"></div>
+      <div class="movie" style="height:580px" data-video="lp-eps-0p1"></div>
+    </div>
+    <p data-build="1" class="takeaway">As \(\varepsilon\downarrow0\), \(L=\ZZ_0\) leaves an “afterimage” slow region—optimal solution set of a nearby LP—in \(\mathrm{LP}_\varepsilon\).</p>
+    <p data-build="1" class="center blue">The field is stable under perturbation, yet the optimal solution set is unstable under perturbation.</p>
+  </div>
+</section>
+
+<section data-number="29" data-title="Slow Region Families: Formalizing Slow Convergence">
+  <h1>Slow Region Families: Formalizing Slow Convergence</h1><div class="content compact">
+    <div data-component="slow-region-definition"></div>
+    <p class="center"><b>Vanishing Relative Motion</b></p>
+    <img class="figure" style="height:340px" src="assets/slow-region-family.svg" alt="Three slow regions and an ellipsis: residual arrows shrink relative to solution distance">
+  </div>
+</section>
+
+<section data-number="30" data-title="Slow Region Families: Formalizing Slow Convergence">
+  <h1>Slow Region Families: Formalizing Slow Convergence</h1><div class="content compact">
+    <div data-component="slow-region-definition"></div>
+    <div class="columns two">
+      <div><p><b>LP verification</b> (\(\sigma=1\))</p><p>Fix \(a\in(0,1)\) and trim \(L\) to</p>
+        \[\region_\varepsilon=\{(-u,u-1):a\leq u\leq1\}.\]
+        <p>For every \(z\in\region_\varepsilon\),</p>
+        \[\norm{\delta_\varepsilon(z)}=\frac{\varepsilon}{\sqrt2},\qquad\dist(z,\ZZ_\varepsilon)\geq\sqrt2\,a.\]
+        \[\Longrightarrow\quad\boxed{\blue{\rho_\varepsilon\leq\varepsilon/(2a)\longrightarrow0}}.\]</div>
+      <div><p class="center"><b>The Trimmed LP Segment</b></p><img class="figure" style="height:335px" src="assets/lp-trimmed-segment.svg" alt="Trimmed part of the old fixed-point segment remains separated from the new optimum"></div>
+    </div>
+  </div>
+</section>
+
+<section data-number="31" data-title="Slow Region Families: Persistence Away from Optimality">
+  <h1>Slow Region Families: Persistence Away from Optimality</h1><div class="content compact">
+    <div data-component="slow-region-definition"></div>
+    <div class="theorem"><h2>Proposition (Persistence Away from the Solution Set <a data-cite="KY26b" data-detail="Proposition 2.4"></a>)</h2><div>
+      <p>Assume \(T_\varepsilon\) is averaged in \(Q_\varepsilon\), with uniform bounds \(m\Id\preceq Q_\varepsilon\preceq M\Id\) (\(0&lt;m\leq M&lt;\infty\)).</p>
+      \[\text{For any }\beta\in(0,1),\qquad N_\varepsilon:=\left\lfloor(1-\beta)\sqrt{m/M}\,\rho_\varepsilon^{-1}\right\rfloor\longrightarrow\infty.\]
+      <p>Every orbit \(z^{k+1}=T_\varepsilon(z^k)\) starting at \(z^0\in\region_\varepsilon\) satisfies</p>
+      \[\blue{\dist(z^k,\ZZ_\varepsilon)\geq\beta\sqrt{m/M}\,\dist(z^0,\ZZ_\varepsilon)},\qquad0\leq k\leq N_\varepsilon.\]
+    </div></div>
+    <p class="small">The orbit may leave \(\region_\varepsilon\); the distance bound persists. For the ADMM map used here, \(m=M=1\).</p>
+  </div>
+</section>
+
+<section data-number="32" data-title="The Afterimage Principle: A Concrete Mechanism for Slow Convergence">
+  <h1>The Afterimage Principle: A Concrete Mechanism for Slow Convergence</h1><div class="content compact">
+    <div class="columns" style="grid-template-columns:0.92fr 1.8fr">
+      <div><p>\(\mathcal D_{\rm KKT}\): parameters with <span class="blue">nonempty KKT solution sets</span>.</p>
+        <div data-build="1"><p><b>Center family</b> \(\{\theta_\varepsilon^c\}\)</p><p>The problems we solve.</p></div>
+        <div data-build="2"><p><b>Petal families</b> \(\{\theta_\varepsilon^p\}\)</p><p>Nearby comparison problems.</p></div>
+        <div data-build="3">\[\theta_\varepsilon^c,\ \theta_\varepsilon^p\longrightarrow\bar\theta\quad(\varepsilon\downarrow0).\]
+          <p>Only the center must have KKT solutions.</p></div>
+      </div>
+      <div><img class="figure" style="height:430px" src="assets/afterimage-framework-1.svg" data-build-images="assets/afterimage-framework-1.svg|assets/afterimage-framework-2.svg|assets/afterimage-framework-3.svg|assets/afterimage-framework-4.svg|assets/afterimage-framework-5.svg|assets/afterimage-framework-6.svg" alt="Center and petal families approaching a common parameter limit, linked to state-space geometry">
+      <p data-build="4" class="center small">Blue: center solutions.　Red/orange: petal solutions.<br>Magenta: petal drift paths.</p></div>
+    </div>
+    <ul data-build="4"><li>Nearby problem data give similar residual fields on bounded regions.</li>
+      <li>Petal solutions or drift paths (when infeasible) can lie far from the center’s solutions.</li></ul>
+    <p data-build="5" class="takeaway">When field motion is small relative to the separation of optimal sets, the petal leaves a slow afterimage.</p>
+  </div>
+</section>
+
+<section data-number="33" data-title="Three Geometric Cases of Afterimage">
+  <h1>Three Geometric Cases of Afterimage</h1><div class="content compact">
+    <div class="columns three">
+      <div><h3>1. Face Selection</h3><div class="movie" style="height:325px" data-video="afterimage-face-selection"></div>
+        <p>Freeze the petal. The center’s solutions collapse onto a face of the petal’s solution set.</p>
+        <p class="blue">Trimmed parts of the old solution set remain slow.</p></div>
+      <div><h3>2. Hölder Sensitivity</h3><div class="movie" style="height:325px" data-video="afterimage-holder-sensitivity"></div>
+        <p>Freeze the center. Petal solutions move much farther than the data change.</p>
+        <p class="blue">The center’s field is weak at those displaced solutions.</p></div>
+      <div><h3>3. Escape to Infinity</h3><div class="movie" style="height:325px" data-video="afterimage-escape-to-infinity"></div>
+        <p>Center solutions recede to infinity. The petal may have no solution.</p>
+        <p class="blue">Drift is small relative to the distant center solutions.</p></div>
+    </div>
+    <p class="small">Schematic parameter sweeps.　Gray: center.　Red: petal solutions/drift.　Blue: slow regions/weak field.</p>
+  </div>
+</section>
+
+<section data-number="34" data-title="Face Selection: A Second-Order Cone Example">
+  <h1>Face Selection: A Second-Order Cone Example</h1><div class="content compact">
+    <p>We have already seen face selection in the LP example. Now consider</p>
+    \[\min_x\ \varepsilon(x_1-x_2)\qquad\text{s.t. }x_3=0,\quad x_1\geq\sqrt{x_2^2+x_3^2}.\]
+    <p class="center blue">Running PDHG from three different initializations.</p>
+    <div class="columns two" style="width:80%;margin:auto">
+      <div class="movie" style="height:425px" data-video="socp-eps-0"></div>
+      <div class="movie" style="height:425px" data-video="socp-eps-0p1"></div>
+    </div>
+    <p class="center">Petal (\(\varepsilon=0\)): the entire wedge \(x_1\geq|x_2|\).<br>Center (\(\varepsilon&gt;0\)): only the edge \(x_1=x_2\geq0\).</p>
+  </div>
+</section>
+
+<section data-number="35" data-title="Escape to Infinity">
+  <h1>Escape to Infinity</h1><div class="content compact">
+    \[\min_{x\geq0}x_2\qquad\text{s.t. }-x_1+\varepsilon x_2=1.\]
+    <div class="columns two">
+      <p>Petal (\(\varepsilon=0\)): infeasible, with drift along the ray \(\{(0,0,y):y\geq0\}\).</p>
+      <p>Center (\(\varepsilon&gt;0\)): a unique PDHG fixed point \(z_\varepsilon^\star=(0,\varepsilon^{-1},\varepsilon^{-1})\) escapes to infinity.</p>
+    </div>
+    <p class="center blue">Running PDHG from three different initializations.</p>
+    <div class="columns two" style="width:80%;margin:auto">
+      <div class="movie" style="height:460px" data-video="escape-eps-0"></div>
+      <div class="movie" style="height:460px" data-video="escape-eps-0p1"></div>
+    </div>
+  </div>
+</section>
+
+<section data-number="36" data-title="Multiple Petals, Multiple Slow Regions">
+  <h1>Multiple Petals, Multiple Slow Regions</h1><div class="content compact center">
+    \[\min_{X\succeq0}\ \varepsilon^2X_{11}+X_{22}\qquad\text{s.t. }2X_{12}-X_{22}=\varepsilon^3.\]
+    <p class="blue">Running ADMM.</p>
+    <div class="movie" style="height:500px" data-video="multiple-petals-center-eps-0p1"></div>
+    <div class="columns two"><p>Petal 1: remove both perturbations.<br>Ray afterimage.</p><p>Petal 2: set only the right-hand side to zero.<br>Segment afterimage.</p></div>
+  </div>
+</section>
+
+<!-- The definition stays aligned and is editable in one place. -->
+<template id="slow-region-definition">
+  <p>For a family \(\theta_\varepsilon\to\bar\theta\), write \(T_\varepsilon:=T_{\theta_\varepsilon}\), \(\delta_\varepsilon:=T_\varepsilon-\Id\), and \(\ZZ_\varepsilon:=\Fix T_\varepsilon\ne\varnothing\).</p>
+  <div class="theorem"><h2>Definition (Slow Region Family <a data-cite="KY26b" data-detail="Definition 2.3"></a>)</h2><div>
+    <p>A family \(\{\region_\varepsilon\}_{\varepsilon\downarrow0}\) is a <b>slow region (SR) family</b> if \(\varnothing\ne\region_\varepsilon\subseteq\HH\setminus\ZZ_\varepsilon\) and</p>
+    \[0&lt;\rho_\varepsilon:=\sup_{z\in\region_\varepsilon}\frac{\norm{\delta_\varepsilon(z)}}{\dist(z,\ZZ_\varepsilon)}&lt;\infty,\qquad\blue{\rho_\varepsilon\longrightarrow0}\quad\text{as }\varepsilon\downarrow0.\]
+  </div></div>
+</template>

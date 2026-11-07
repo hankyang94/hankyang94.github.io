@@ -9,6 +9,11 @@ nav: true
 talk_groups:
   - name: "Mathematical Optimization"
     talks:
+      - title: "A Field Theory of First-Order Methods for Linear Conic Optimization"
+        date: "Nov 2026"
+        venue: "Linear Algebra and Optimization Seminar, Stanford University"
+        slides: "/presentation/FieldConic/"
+
       - title: "Alternating Direction Method of Multipliers for Semidefinite Programming: Theory and Practice"
         date: "Jun 2026"
         venue: "Department of Applied Mathematics, Hong Kong Polytechnic University"

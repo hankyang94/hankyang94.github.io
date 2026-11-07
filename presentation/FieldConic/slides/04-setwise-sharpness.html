@@ -1,0 +1,48 @@
+<section data-number="21" data-title="Region III: Tube around the Entire Solution Set" class="illustrated-theorem">
+  <h1>Region III: Tube around the Entire Solution Set (SDP)</h1>
+  <img class="canvas-illustration" src="assets/sdp-tube-region-canvas.svg" alt="A tube containing the whole solution disk"><div class="content compact">
+    <div class="canvas-panel canvas-discussion">
+    <ul><li>For an SDP \(\theta\) with fixed-\(\sigma\) ADMM, SC points satisfy <span class="blue">\(\kappa_\theta(\operatorname{Ball}_r(\bar Z_{\mathrm{SC}}))&gt;0\)</span> for sufficiently small \(r&gt;0\), but a singular point \(\bar Z\) can satisfy <span class="red">\(\kappa_\theta(\operatorname{Ball}_r(\bar Z))=0\)</span> for every \(r&gt;0\).</li>
+    <li>If such a singular point exists, then <span class="red">\(\kappa_\theta(\ZZ_\theta+\operatorname{Ball}_r(0))=0\)</span> for every \(r&gt;0\). Thus, <b>positive setwise sharpness is not guaranteed for general SDPs</b> (whereas for LPs this holds under mild conditions).</li></ul>
+    <p class="takeaway">Are there families of SDPs for which positive setwise sharpness holds?</p>
+    </div>
+  </div>
+</section>
+
+<section data-number="22" data-title="Encouraging Numerical Evidence for Setwise Sharpness">
+  <h1>Encouraging Numerical Evidence for Setwise Sharpness</h1><div class="content compact">
+    \[\text{Binary quadratic program:}\qquad\min_{\chi\in\{\pm1\}^n} f(\chi),\qquad f(\chi)=\tfrac12\chi^\top M\chi+c^\top\chi.\]
+    <p>Consider its <b>second-order (degree 4) Moment–SOS relaxation</b> with a <b>random objective</b> \(f\).</p>
+    <p>Run ADMM on the same SDP relaxation with <b>two different initializations</b>.</p>
+    <div class="columns two center">
+      <div><p>Gaussian initialization: <span class="blue">SC limit</span></p><img class="figure" style="height:340px" src="assets/sc-bqp-r1-20.svg" alt="Gaussian initialization converges to an SC limit"></div>
+      <div><p>All-zero initialization: <span class="blue">singular limit</span></p><img class="figure" style="height:340px" src="assets/sc-bqp-r1-20-zero.svg" alt="Zero initialization converges to a singular limit"></div>
+    </div>
+    <p class="center small"><span class="red">\(r_{\max}^{(k)}\)</span>: maximum KKT residual　　<span class="blue">\(\norm{Z^{k+1}-Z^k}_F\)</span>: fixed-point residual</p>
+    <p data-build="1" class="center blue"><b>Identical local linear convergence tails<br>despite hitting different points in the optimal solution set.</b></p>
+  </div>
+</section>
+
+<section data-number="23" data-title="Field Rigidity Characterizes Setwise Sharpness" class="illustrated-theorem">
+  <h1>Field Rigidity Characterizes Setwise Sharpness</h1>
+  <img class="canvas-illustration" src="assets/sdp-field-rigidity-canvas.svg" alt="Interior and boundary normal directions around the solution disk"><div class="content compact">
+    <div class="canvas-panel">
+    <!-- arXiv:2610.20270v2, Assumption 3.1 and Theorem 3.2 (i), (iii), (v).
+         Slide notation: L = span(ZZ_theta - ZZ_theta), the direction space
+         of the affine hull. This L is the paper's D = M direct-sum L_paper,
+         including both primal and dual-slack directions (Eq. 3.3–3.4). -->
+    <div class="theorem"><h2>Theorem (Two-Sided Field Rigidity <a data-cite="K26" data-detail="Theorem 3.2"></a>)</h2><div>
+      <p>Assume the primal and dual optimal sets are <b>nonempty and compact</b>, and an <b>SC optimal pair</b> \((X_{\mathrm{SC}},S_{\mathrm{SC}})\) satisfies \(0&lt;\rank X_{\mathrm{SC}}&lt;n\). <b>Both optima may be nonunique.</b> Fix \(\sigma&gt;0\), let \(L=\spanop(\ZZ_\theta-\ZZ_\theta)\), and define</p>
+      \[\mu_{\ri}:=\inf_{\bar Z\in\ri\ZZ_\theta,\ H\in L^\perp,\ \norm H_F=1}\norm{\delta_\theta'(\bar Z;H)}_F.\]
+      <div class="blue">\[
+        \mu_{\ri}&gt;0
+        \quad\Longleftrightarrow\quad \kappa_\theta(\ZZ_\theta+\operatorname{Ball}_r(0))&gt;0\quad\text{for some }r&gt;0
+        \quad\Longleftrightarrow\quad \mathcal C(\bar Z)=\mathcal T(\bar Z)\quad\text{for every }\bar Z\in\ZZ_\theta.
+      \]</div>
+    </div></div>
+    <ul data-build="1" class="canvas-notes small"><li><b>Intuition:</b> A fixed SC pair controls both primal and dual directions; exact PSD projection secants extend interior sharpness to singular boundary points.</li>
+    <li><a data-cite="K26" data-detail="Theorem 4.3"></a> verifies rigidity for <b>uniquely rank-one exact Boolean Moment–SOS relaxations</b> in quotient form with <b>one SC optimal SOS certificate</b> (\(\rightarrow\) eventual linear convergence, even at singular limits).</li>
+    <li><b>Conjecture:</b> Rigidity holds for a broad class of Moment–SOS relaxations of polynomial optimization problems.</li></ul>
+    </div>
+  </div>
+</section>
